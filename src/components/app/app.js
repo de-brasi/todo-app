@@ -4,6 +4,7 @@ import AppHeader from "../app-header";
 import SearchPanel from "../search-panel";
 import ItemStatusFilter from "../item-status-filter";
 import TodoList from "../todo-list";
+import AddItem from "../add-item";
 
 import './app.css';
 
@@ -39,12 +40,13 @@ export default class App extends Component {
             <div className="app">
                 <AppHeader toDo={1} done={3} />
                 <span className="input-group mb-3 d-flex">
-                <span><SearchPanel/></span>
-                <span><ItemStatusFilter/></span>
-            </span>
+                    <span><SearchPanel/></span>
+                    <span><ItemStatusFilter/></span>
+                </span>
                 <TodoList
                     todos={this.state.todoData}
                     onDeleted={ this.deleteItem }/>
+                <AddItem />
             </div>
         );
     }
