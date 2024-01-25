@@ -39,13 +39,13 @@ const TodoListItem = ({label, important = false}) => {
             <span className="handling-button-box">
                 <button
                     type={"button"}
-                    className="btn btn-outline-success btn-sm">
-                    {exclamationSGV}
+                    className="btn btn-outline-danger btn-sm">
+                    {trashCanSVG}
                 </button>
                 <button
                     type={"button"}
-                    className="btn btn-outline-danger btn-sm">
-                    {trashCanSVG}
+                    className="btn btn-outline-success btn-sm">
+                    {exclamationSGV}
                 </button>
             </span>
         </span>
