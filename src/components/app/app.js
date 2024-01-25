@@ -8,12 +8,32 @@ import TodoList from "../todo-list";
 import './app.css';
 
 export default class App extends Component {
-    render() {
-        const todoData = [
+
+    state = {
+        todoData: [
             {label: 'Какая-то задача', important: false, id: 1},
             {label: 'И еще задача', important: false, id: 2},
             {label: 'И еще', important: true, id: 3}
-        ];
+        ]
+    };
+
+    deleteItem = (id) => {
+        this.setState(
+            (state) => {
+                const erasedElementIndex = state.todoData.findIndex((el) => el.id === id);
+
+                const before = state.todoData.slice(0, erasedElementIndex);
+                const after = state.todoData.slice(erasedElementIndex + 1);
+                const updatedTodos = [...before, ...after];
+
+                return {
+                    todoData: updatedTodos
+                };
+            }
+        );
+    };
+
+    render() {
 
         return (
             <div className="app">
@@ -23,9 +43,10 @@ export default class App extends Component {
                 <span><ItemStatusFilter/></span>
             </span>
                 <TodoList
-                    todos={todoData}
-                    onDeleted={ (id) => {console.log('del', id)} }/>
+                    todos={this.state.todoData}
+                    onDeleted={ this.deleteItem }/>
             </div>
         );
     }
+
 }
