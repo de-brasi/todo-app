@@ -21,7 +21,7 @@ export default class App extends Component {
         };
     }
 
-    static findElementByIndex = (collection, id) => {
+    findElementByIndex(collection, id) {
         return collection.findIndex((el) => el.id === id);
     }
 
@@ -36,7 +36,7 @@ export default class App extends Component {
     deleteItem = (id) => {
         this.setState(
             (state) => {
-                const erasedElementIndex = App.findElementByIndex(state.todoData, id);
+                const erasedElementIndex = this.findElementByIndex(state.todoData, id);
 
                 const before = state.todoData.slice(0, erasedElementIndex);
                 const after = state.todoData.slice(erasedElementIndex + 1);
@@ -61,25 +61,29 @@ export default class App extends Component {
         );
     }
 
+    toggleProperty(arr, id, propName) {
+        const updatedElementIndex = this.findElementByIndex(arr, id);
+
+        const sourceItem = arr[updatedElementIndex];
+
+        const updatedItem = {
+            ...sourceItem,
+            [propName]: !sourceItem[propName]
+        };
+
+        return [
+            ...arr.slice(0, updatedElementIndex),
+            updatedItem,
+            ...arr.slice(updatedElementIndex + 1)
+        ];
+    };
+
     onToggleImportant = (id) => {
         this.setState(
             (state) => {
-                const updatedElementIndex = App.findElementByIndex(state.todoData, id);
-
-                const sourceItem = state.todoData[updatedElementIndex];
-
-                const updatedItem = {
-                    ...sourceItem,
-                    important: !sourceItem.important
+                return {
+                    todoData: this.toggleProperty(state.todoData, id, 'important')
                 };
-
-                const res = [
-                    ...state.todoData.slice(0, updatedElementIndex),
-                    updatedItem,
-                    ...state.todoData.slice(updatedElementIndex + 1)
-                ];
-
-                return { todoData: res };
             }
         );
     };
@@ -87,29 +91,17 @@ export default class App extends Component {
     onToggleDone = (id) => {
         this.setState(
             (state) => {
-                const updatedElementIndex = App.findElementByIndex(state.todoData, id);
-
-                const sourceItem = state.todoData[updatedElementIndex];
-
-                const updatedItem = {
-                    ...sourceItem,
-                    done: !sourceItem.done
+                return {
+                    todoData: this.toggleProperty(state.todoData, id, 'done')
                 };
-
-                const res = [
-                    ...state.todoData.slice(0, updatedElementIndex),
-                    updatedItem,
-                    ...state.todoData.slice(updatedElementIndex + 1)
-                ];
-
-                return { todoData: res };
             }
         );
     };
 
     render() {
 
-        const { todoData } = this.state.todoData;
+        const { todoData } = this.state;
+
         const doneCount = todoData.filter((el) => el.done).length;
         const todoCount = todoData.length - doneCount;
 
