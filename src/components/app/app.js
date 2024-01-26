@@ -42,11 +42,9 @@ export default class App extends Component {
         this.setState(
             (state) => {
                 const newTasksId = state.lastUsedId + 1;
+                const newItem = {label: tasksDescription, important: false, id: newTasksId};
 
-                let updatedTodos = state.todoData.slice(0);
-                updatedTodos.push(
-                    {label: tasksDescription, important: false, id: newTasksId}
-                );
+                const updatedTodos = [...state.todoData, newItem];
 
                 return {
                     todoData: updatedTodos,
