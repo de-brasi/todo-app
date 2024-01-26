@@ -1,0 +1,9 @@
+.form-control.task-input {
+    width: auto;
+    flex-grow: 1;
+    margin-right: 3px;
+}
+
+.form-control.task-input::placeholder {
+    padding-left: 10px;
+}
