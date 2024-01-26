@@ -4,7 +4,7 @@ import AppHeader from "../app-header";
 import SearchPanel from "../search-panel";
 import ItemStatusFilter from "../item-status-filter";
 import TodoList from "../todo-list";
-import AddItem from "../add-item";
+import ItemAddForm from "../item-add-form";
 
 import './app.css';
 
@@ -15,10 +15,12 @@ export default class App extends Component {
             {label: 'Какая-то задача', important: false, id: 1},
             {label: 'И еще задача', important: false, id: 2},
             {label: 'И еще', important: true, id: 3}
-        ]
+        ],
+        lastUsedId: 4
     };
 
     deleteItem = (id) => {
+
         this.setState(
             (state) => {
                 const erasedElementIndex = state.todoData.findIndex((el) => el.id === id);
@@ -32,7 +34,28 @@ export default class App extends Component {
                 };
             }
         );
+
     };
+
+    addItem = (tasksDescription) => {
+
+        this.setState(
+            (state) => {
+                const newTasksId = state.lastUsedId + 1;
+
+                let updatedTodos = state.todoData.slice(0);
+                updatedTodos.push(
+                    {label: tasksDescription, important: false, id: newTasksId}
+                );
+
+                return {
+                    todoData: updatedTodos,
+                    lastUsedId: newTasksId
+                };
+            }
+        );
+
+    }
 
     render() {
 
@@ -46,7 +69,8 @@ export default class App extends Component {
                 <TodoList
                     todos={this.state.todoData}
                     onDeleted={ this.deleteItem }/>
-                <AddItem />
+                <ItemAddForm
+                    onAdd = {this.addItem} />
             </div>
         );
     }
