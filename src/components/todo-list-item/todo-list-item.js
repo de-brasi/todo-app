@@ -10,6 +10,9 @@ export default class TodoListItem extends Component {
     };
 
     onLabelClick = () => {
+        // callback to App
+        this.props.onToggleDone();
+
         this.setState((state) => {
             return {
                 done: !state.done
@@ -18,6 +21,9 @@ export default class TodoListItem extends Component {
     }
 
     onMarkAsImportant = () => {
+        // callback to App
+        this.props.onToggleImportant();
+
         this.setState((state) => {
             return {
                 important: !state.important
@@ -27,7 +33,7 @@ export default class TodoListItem extends Component {
 
     render() {
 
-        const { label, onDeleted } = this.props;
+        const { label, onDeleted, onToggleDone, onToggleImportant } = this.props;
         const { done, important } = this.state;
 
         let classNames = 'todo-list-item';

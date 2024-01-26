@@ -55,6 +55,14 @@ export default class App extends Component {
 
     }
 
+    onToggleImportant = (id) => {
+        console.log(`element with ${id} marked as important`);
+    };
+
+    onToggleDone = (id) => {
+        console.log(`element with ${id} marked as done`);
+    };
+
     render() {
 
         return (
@@ -65,10 +73,14 @@ export default class App extends Component {
                     <span><ItemStatusFilter/></span>
                 </span>
                 <TodoList
-                    todos={this.state.todoData}
-                    onDeleted={ this.deleteItem }/>
+                    todos={ this.state.todoData }
+                    onDeleted={ this.deleteItem }
+                    onToggleImportant={ this.onToggleImportant }
+                    onToggleDone={ this.onToggleDone }
+                />
                 <ItemAddForm
-                    onAdd = {this.addItem} />
+                    onAdd = { this.addItem }
+                />
             </div>
         );
     }
