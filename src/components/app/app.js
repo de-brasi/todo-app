@@ -12,9 +12,9 @@ export default class App extends Component {
 
     state = {
         todoData: [
-            {label: 'Какая-то задача', important: false, id: 1},
-            {label: 'И еще задача', important: false, id: 2},
-            {label: 'И еще', important: true, id: 3}
+            {label: 'Какая-то задача', important: false, done: false, id: 1},
+            {label: 'И еще задача', important: false, done: false, id: 2},
+            {label: 'И еще', important: false, done: false, id: 3}
         ],
         lastUsedId: 4
     };
@@ -42,7 +42,9 @@ export default class App extends Component {
         this.setState(
             (state) => {
                 const newTasksId = state.lastUsedId + 1;
-                const newItem = {label: tasksDescription, important: false, id: newTasksId};
+                const newItem = {
+                    label: tasksDescription, important: false, done: false, id: newTasksId
+                };
 
                 const updatedTodos = [...state.todoData, newItem];
 
