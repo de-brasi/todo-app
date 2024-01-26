@@ -109,9 +109,12 @@ export default class App extends Component {
 
     render() {
 
+        const doneCount = this.state.todoData.filter((el) => el.done).length;
+        const todoCount = this.state.todoData.length - doneCount;
+
         return (
             <div className="app">
-                <AppHeader toDo={1} done={3} />
+                <AppHeader toDo={ todoCount } done={ doneCount } />
                 <span className="input-group mb-3 d-flex">
                     <span><SearchPanel/></span>
                     <span><ItemStatusFilter/></span>
