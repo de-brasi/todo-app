@@ -4,7 +4,7 @@ import './item-add-form.css';
 
 const ItemAddForm = ({ onAdd }) => {
     return (
-        <span className="form-group mb-3 d-flex">
+        <span className="item-add-form form-group mb-3 d-flex">
             <input type="text"
                    className="form-control task-input"
                     placeholder="task's description">
