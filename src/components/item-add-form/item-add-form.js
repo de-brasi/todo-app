@@ -1,8 +1,8 @@
 import React from 'react';
 
-import './add-item.css';
+import './item-add-form.css';
 
-const AddItem = () => {
+const ItemAddForm = ({ onAdd }) => {
     return (
         <span className="form-group mb-3 d-flex">
             <input type="text"
@@ -12,7 +12,8 @@ const AddItem = () => {
             <div className="btn-group">
                 <button
                     type="button"
-                    className="btn btn-success">
+                    className="btn btn-success"
+                    onClick={ () => onAdd('new task') }>
                     Add task
                 </button>
             </div>
@@ -20,4 +21,4 @@ const AddItem = () => {
     );
 };
 
-export default AddItem;
+export default ItemAddForm;
