@@ -25,12 +25,37 @@ export default class App extends Component {
         return collection.findIndex((el) => el.id === id);
     }
 
+    filterAllTasks = (arr) => arr;
+
+    filterActiveTasks = (arr) => arr.filter((item) => !item.done);
+
+    filterDoneTasks = (arr) => arr.filter((item) => item.done);
+
+    setFilter = (description) => {
+        let newFilter;
+
+        if (description === 'all') {
+            newFilter = this.filterAllTasks;
+        } else if (description === 'active') {
+            newFilter = this.filterActiveTasks;
+        } else if (description === 'done') {
+            newFilter = this.filterDoneTasks;
+        } else {
+            throw new Error("unexpected filter's description");
+        }
+
+        this.setState((state) => {
+            return {filter: newFilter};
+        });
+    }
+
     state = {
         todoData: [
             this.createListItem('Какая-то задача'),
             this.createListItem('И еще задача'),
             this.createListItem('И еще')
-        ]
+        ],
+        filter: this.filterAllTasks
     };
 
     deleteItem = (id) => {
@@ -56,7 +81,7 @@ export default class App extends Component {
 
                 const updatedTodos = [...state.todoData, newItem];
 
-                return { todoData: updatedTodos };
+                return {todoData: updatedTodos};
             }
         );
     }
@@ -100,26 +125,29 @@ export default class App extends Component {
 
     render() {
 
-        const { todoData } = this.state;
+        const {todoData, filter} = this.state;
 
         const doneCount = todoData.filter((el) => el.done).length;
         const todoCount = todoData.length - doneCount;
 
         return (
             <div className="app">
-                <AppHeader toDo={ todoCount } done={ doneCount } />
+                <AppHeader toDo={todoCount} done={doneCount}/>
                 <span className="input-group mb-3 d-flex">
                     <span><SearchPanel/></span>
-                    <span><ItemStatusFilter/></span>
+                    <span>
+                        <ItemStatusFilter
+                            onFilterChange={this.setFilter}/>
+                    </span>
                 </span>
                 <TodoList
-                    todos={ todoData }
-                    onDeleted={ this.deleteItem }
-                    onToggleImportant={ this.onToggleImportant }
-                    onToggleDone={ this.onToggleDone }
+                    todos={filter(todoData)}
+                    onDeleted={this.deleteItem}
+                    onToggleImportant={this.onToggleImportant}
+                    onToggleDone={this.onToggleDone}
                 />
                 <ItemAddForm
-                    onAdd = { this.addItem }
+                    onAdd={this.addItem}
                 />
             </div>
         );
