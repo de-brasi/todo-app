@@ -66,7 +66,7 @@ export default class App extends Component {
             (state) => {
                 const updatedElementIndex = App.findElementByIndex(state.todoData, id);
 
-                const sourceItem = this.state.todoData[updatedElementIndex];
+                const sourceItem = state.todoData[updatedElementIndex];
 
                 const updatedItem = {
                     ...sourceItem,
@@ -89,7 +89,7 @@ export default class App extends Component {
             (state) => {
                 const updatedElementIndex = App.findElementByIndex(state.todoData, id);
 
-                const sourceItem = this.state.todoData[updatedElementIndex];
+                const sourceItem = state.todoData[updatedElementIndex];
 
                 const updatedItem = {
                     ...sourceItem,
@@ -109,8 +109,9 @@ export default class App extends Component {
 
     render() {
 
-        const doneCount = this.state.todoData.filter((el) => el.done).length;
-        const todoCount = this.state.todoData.length - doneCount;
+        const { todoData } = this.state.todoData;
+        const doneCount = todoData.filter((el) => el.done).length;
+        const todoCount = todoData.length - doneCount;
 
         return (
             <div className="app">
@@ -120,7 +121,7 @@ export default class App extends Component {
                     <span><ItemStatusFilter/></span>
                 </span>
                 <TodoList
-                    todos={ this.state.todoData }
+                    todos={ todoData }
                     onDeleted={ this.deleteItem }
                     onToggleImportant={ this.onToggleImportant }
                     onToggleDone={ this.onToggleDone }
