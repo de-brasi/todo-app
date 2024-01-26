@@ -4,10 +4,10 @@ import './item-add-form.css';
 
 const ItemAddForm = ({ onAdd }) => {
     return (
-        <span className="item-add-form form-group mb-3 d-flex">
+        <form className="item-add-form form-group mb-3 d-flex">
             <input type="text"
                    className="form-control task-input"
-                    placeholder="task's description">
+                   placeholder="task's description">
             </input>
             <div className="btn-group">
                 <button
@@ -17,7 +17,7 @@ const ItemAddForm = ({ onAdd }) => {
                     Add task
                 </button>
             </div>
-        </span>
+        </form>
     );
 };
 
