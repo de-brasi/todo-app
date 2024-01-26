@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, {Component} from "react";
 
 import AppHeader from "../app-header";
 import SearchPanel from "../search-panel";
@@ -10,20 +10,33 @@ import './app.css';
 
 export default class App extends Component {
 
+    firstFreeTodoListItemIndex = 0;
+
+    createListItem = (label) => {
+        return {
+            label: label,
+            important: false,
+            done: false,
+            id: this.firstFreeTodoListItemIndex++
+        };
+    }
+
+    static findElementByIndex = (collection, id) => {
+        return collection.findIndex((el) => el.id === id);
+    }
+
     state = {
         todoData: [
-            {label: 'Какая-то задача', important: false, done: false, id: 1},
-            {label: 'И еще задача', important: false, done: false, id: 2},
-            {label: 'И еще', important: false, done: false, id: 3}
-        ],
-        lastUsedId: 4
+            this.createListItem('Какая-то задача'),
+            this.createListItem('И еще задача'),
+            this.createListItem('И еще')
+        ]
     };
 
     deleteItem = (id) => {
-
         this.setState(
             (state) => {
-                const erasedElementIndex = state.todoData.findIndex((el) => el.id === id);
+                const erasedElementIndex = App.findElementByIndex(state.todoData, id);
 
                 const before = state.todoData.slice(0, erasedElementIndex);
                 const after = state.todoData.slice(erasedElementIndex + 1);
@@ -34,35 +47,64 @@ export default class App extends Component {
                 };
             }
         );
-
     };
 
     addItem = (tasksDescription) => {
-
         this.setState(
             (state) => {
-                const newTasksId = state.lastUsedId + 1;
-                const newItem = {
-                    label: tasksDescription, important: false, done: false, id: newTasksId
-                };
+                const newItem = this.createListItem(tasksDescription);
 
                 const updatedTodos = [...state.todoData, newItem];
 
-                return {
-                    todoData: updatedTodos,
-                    lastUsedId: newTasksId
-                };
+                return { todoData: updatedTodos };
             }
         );
-
     }
 
     onToggleImportant = (id) => {
-        console.log(`element with ${id} marked as important`);
+        this.setState(
+            (state) => {
+                const updatedElementIndex = App.findElementByIndex(state.todoData, id);
+
+                const sourceItem = this.state.todoData[updatedElementIndex];
+
+                const updatedItem = {
+                    ...sourceItem,
+                    important: !sourceItem.important
+                };
+
+                const res = [
+                    ...state.todoData.slice(0, updatedElementIndex),
+                    updatedItem,
+                    ...state.todoData.slice(updatedElementIndex + 1)
+                ];
+
+                return { todoData: res };
+            }
+        );
     };
 
     onToggleDone = (id) => {
-        console.log(`element with ${id} marked as done`);
+        this.setState(
+            (state) => {
+                const updatedElementIndex = App.findElementByIndex(state.todoData, id);
+
+                const sourceItem = this.state.todoData[updatedElementIndex];
+
+                const updatedItem = {
+                    ...sourceItem,
+                    done: !sourceItem.done
+                };
+
+                const res = [
+                    ...state.todoData.slice(0, updatedElementIndex),
+                    updatedItem,
+                    ...state.todoData.slice(updatedElementIndex + 1)
+                ];
+
+                return { todoData: res };
+            }
+        );
     };
 
     render() {
