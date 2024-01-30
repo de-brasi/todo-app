@@ -45,7 +45,7 @@ export default class App extends Component {
         }
 
         this.setState((state) => {
-            return {filter: newFilter};
+            return {filterByType: newFilter};
         });
     }
 
@@ -55,7 +55,7 @@ export default class App extends Component {
             this.createListItem('И еще задача'),
             this.createListItem('И еще')
         ],
-        filter: this.filterAllTasks
+        filterByType: this.filterAllTasks
     };
 
     showSpecificTasks = (someArg) => {
@@ -129,7 +129,7 @@ export default class App extends Component {
 
     render() {
 
-        const {todoData, filter} = this.state;
+        const {todoData, filterByType} = this.state;
 
         const doneCount = todoData.filter((el) => el.done).length;
         const todoCount = todoData.length - doneCount;
@@ -148,7 +148,7 @@ export default class App extends Component {
                     </span>
                 </span>
                 <TodoList
-                    todos={filter(todoData)}
+                    todos={filterByType(todoData)}
                     onDeleted={this.deleteItem}
                     onToggleImportant={this.onToggleImportant}
                     onToggleDone={this.onToggleDone}
