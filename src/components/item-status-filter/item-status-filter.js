@@ -54,8 +54,6 @@ export default class ItemStatusFilter extends Component {
             ),
         };
 
-        console.log(buttonsClassNames)
-
         return (
             <div className="btn-group">
                 <button
