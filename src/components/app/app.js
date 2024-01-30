@@ -55,11 +55,23 @@ export default class App extends Component {
             this.createListItem('И еще задача'),
             this.createListItem('И еще')
         ],
-        filterByType: this.filterAllTasks
+        filterByType: this.filterAllTasks,
+        filterByUserQuery: this.filterAllTasks
     };
 
-    showSpecificTasks = (someArg) => {
-        console.log('search rule', someArg);
+    setFilterFromUser = (searchQuery) => {
+        let newFilter;
+        if (!searchQuery) {
+            newFilter = this.filterAllTasks;
+        } else {
+            newFilter = (arr) => arr.filter(
+                (item) => item.label.toLowerCase().includes(searchQuery.toLowerCase())
+            );
+        }
+
+        this.setState(
+            {filterByUserQuery: newFilter}
+        );
     };
 
     deleteItem = (id) => {
@@ -129,7 +141,7 @@ export default class App extends Component {
 
     render() {
 
-        const {todoData, filterByType} = this.state;
+        const {todoData, filterByType, filterByUserQuery} = this.state;
 
         const doneCount = todoData.filter((el) => el.done).length;
         const todoCount = todoData.length - doneCount;
@@ -140,7 +152,7 @@ export default class App extends Component {
                 <span className="input-group mb-3 d-flex">
                     <span>
                         <SearchPanel
-                            onAddFilterRule={this.showSpecificTasks}/>
+                            onAddFilterRule={this.setFilterFromUser}/>
                     </span>
                     <span>
                         <ItemStatusFilter
@@ -148,7 +160,9 @@ export default class App extends Component {
                     </span>
                 </span>
                 <TodoList
-                    todos={filterByType(todoData)}
+                    todos={
+                        filterByType(filterByUserQuery(todoData))
+                    }
                     onDeleted={this.deleteItem}
                     onToggleImportant={this.onToggleImportant}
                     onToggleDone={this.onToggleDone}
