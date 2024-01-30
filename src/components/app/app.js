@@ -44,9 +44,9 @@ export default class App extends Component {
             throw new Error("unexpected filter's description");
         }
 
-        this.setState((state) => {
-            return {filterByType: newFilter};
-        });
+        this.setState(
+            {filterByType: newFilter}
+        );
     }
 
     state = {
