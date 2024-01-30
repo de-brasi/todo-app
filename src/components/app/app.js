@@ -58,6 +58,10 @@ export default class App extends Component {
         filter: this.filterAllTasks
     };
 
+    showSpecificTasks = (someArg) => {
+        console.log('search rule', someArg);
+    };
+
     deleteItem = (id) => {
         this.setState(
             (state) => {
@@ -134,7 +138,10 @@ export default class App extends Component {
             <div className="app">
                 <AppHeader toDo={todoCount} done={doneCount}/>
                 <span className="input-group mb-3 d-flex">
-                    <span><SearchPanel/></span>
+                    <span>
+                        <SearchPanel
+                            onAddFilterRule={this.showSpecificTasks}/>
+                    </span>
                     <span>
                         <ItemStatusFilter
                             onFilterChange={this.setFilter}/>
