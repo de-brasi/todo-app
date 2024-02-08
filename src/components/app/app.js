@@ -145,8 +145,7 @@ export default class App extends Component {
             }
         );
     };
-    
-    // TODO: test fetch query to backend
+
     sendRequestToServer = async (content, method) => {
         return await fetch(content, {method: method})
             .then(
@@ -179,29 +178,22 @@ export default class App extends Component {
         );
         window.close();
     };
-    
-    // TODO: example of test query
-    // todo: not used yet
-	//    console.log('form submitted! POST HTTP request with content: ', content);
-	//        this.sendRequestToServer(
-	//            'http://localhost:8000/add-task/?description=' + content,
-	//            'POST'
-	//        );
 
     async componentDidMount () {
-        // TODO: fill state with server's data
         const data = await this.sendRequestToServer('http://localhost:8000/get-tasks', 'GET');
-        this.setState(
-            {todoData: data.map((jsonTask) => this.createListItemFromJSON(jsonTask))}
-        );
+        const itemsFromJSON = data.map((jsonTask) => this.createListItemFromJSON(jsonTask));
+        this.firstFreeTodoListItemIndex = itemsFromJSON
+            .map((item) => item.id)
+            .reduce(
+                (prev, current) => Math.max(prev, current),
+                -1
+            ) + 1;
+        this.setState({todoData: itemsFromJSON});
     }
 
     render() {
 
         // TODO:
-        //  todo: собираюсь получить данные с сервера,
-        this.sendRequestToServer('http://localhost:8000/get-tasks', 'GET').then();
-        //  todo: вывести их в консоль как json,
         //  todo: отправить обратно на сервер для сохранения,
         //  todo: проверить логи сервера
 
