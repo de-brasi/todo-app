@@ -24,10 +24,10 @@ export default class App extends Component {
 
     createListItemFromJSON = (todoJSONItem) => {
         return {
-            label: todoJSONItem['description'],
+            label: todoJSONItem['label'],
             important: todoJSONItem['important'],
             done: todoJSONItem['done'],
-            id: todoJSONItem['task_id'],
+            id: todoJSONItem['id'],
             group: todoJSONItem['group'],
         };
     }
@@ -104,6 +104,8 @@ export default class App extends Component {
 
                 const updatedTodos = [...state.todoData, newItem];
 
+                this.uploadDataToServer(JSON.stringify(updatedTodos)).then();
+
                 return {todoData: updatedTodos};
             }
         );
@@ -172,6 +174,7 @@ export default class App extends Component {
     // todo: not used yet
     onShutdownServer = async () => {
         console.log('shutdown server button clicked');
+        await this.uploadDataToServer(this.state.todoData);
         await this.sendRequestToServer(
             'http://localhost:8000/terminate',
             'POST'
@@ -191,12 +194,15 @@ export default class App extends Component {
         this.setState({todoData: itemsFromJSON});
     }
 
+    async uploadDataToServer(jsonStringData) {
+        await this.sendRequestToServer(`http://localhost:8000/add-tasks?tasks=${jsonStringData}`, 'POST');
+    }
+
+    componentWillUnmount() {
+        this.uploadDataToServer(this.state.todoData).then();
+    }
+
     render() {
-
-        // TODO:
-        //  todo: отправить обратно на сервер для сохранения,
-        //  todo: проверить логи сервера
-
         const {todoData, filterByType, filterByUserQuery} = this.state;
 
         const doneCount = todoData.filter((el) => el.done).length;
