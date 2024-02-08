@@ -22,6 +22,16 @@ export default class App extends Component {
         };
     }
 
+    createListItemFromJSON = (todoJSONItem) => {
+        return {
+            label: todoJSONItem['description'],
+            important: todoJSONItem['important'],
+            done: todoJSONItem['done'],
+            id: todoJSONItem['task_id'],
+            group: todoJSONItem['group'],
+        };
+    }
+
     findElementByIndex(collection, id) {
         return collection.findIndex((el) => el.id === id);
     }
@@ -51,11 +61,7 @@ export default class App extends Component {
     }
 
     state = {
-        todoData: [
-            this.createListItem('Какая-то задача'),
-            this.createListItem('И еще задача'),
-            this.createListItem('И еще')
-        ],
+        todoData: [],
         filterByType: this.filterAllTasks,
         filterByUserQuery: this.filterAllTasks
     };
@@ -142,7 +148,7 @@ export default class App extends Component {
     
     // TODO: test fetch query to backend
     sendRequestToServer = async (content, method) => {
-        await fetch(content, {method: method})
+        return await fetch(content, {method: method})
             .then(
                 (response) => {
                     if (!response.ok) {
@@ -153,7 +159,8 @@ export default class App extends Component {
                 }
             )
             .then(data => {
-                console.log(data);
+                console.log('data from server is:', data);
+                return data;
             })
             .catch(
                 (error) => {
@@ -180,6 +187,14 @@ export default class App extends Component {
 	//            'http://localhost:8000/add-task/?description=' + content,
 	//            'POST'
 	//        );
+
+    async componentDidMount () {
+        // TODO: fill state with server's data
+        const data = await this.sendRequestToServer('http://localhost:8000/get-tasks', 'GET');
+        this.setState(
+            {todoData: data.map((jsonTask) => this.createListItemFromJSON(jsonTask))}
+        );
+    }
 
     render() {
 
