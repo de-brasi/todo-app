@@ -17,7 +17,8 @@ export default class App extends Component {
             label: label,
             important: false,
             done: false,
-            id: this.firstFreeTodoListItemIndex++
+            id: this.firstFreeTodoListItemIndex++,
+            group: 'default',
         };
     }
 
