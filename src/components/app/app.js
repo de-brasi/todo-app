@@ -138,8 +138,56 @@ export default class App extends Component {
             }
         );
     };
+    
+    // TODO: test fetch query to backend
+    sendRequestToServer = async (content, method) => {
+        await fetch(content, {method: method})
+            .then(
+                (response) => {
+                    if (!response.ok) {
+                        console.log('status', response.status)
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                }
+            )
+            .then(data => {
+                console.log(data);
+            })
+            .catch(
+                (error) => {
+                    console.log('error:', error);
+                }
+            );
+    };
+    
+    // TODO: use when close window
+    // todo: not used yet
+    onShutdownServer = async () => {
+        console.log('shutdown server button clicked');
+        await this.sendRequestToServer(
+            'http://localhost:8000/terminate',
+            'POST'
+        );
+        window.close();
+    };
+    
+    // TODO: example of test query
+    // todo: not used yet
+	//    console.log('form submitted! POST HTTP request with content: ', content);
+	//        this.sendRequestToServer(
+	//            'http://localhost:8000/add-task/?description=' + content,
+	//            'POST'
+	//        );
 
     render() {
+
+        // TODO:
+        //  todo: собираюсь получить данные с сервера,
+        this.sendRequestToServer('http://localhost:8000/get-tasks', 'GET').then();
+        //  todo: вывести их в консоль как json,
+        //  todo: отправить обратно на сервер для сохранения,
+        //  todo: проверить логи сервера
 
         const {todoData, filterByType, filterByUserQuery} = this.state;
 
