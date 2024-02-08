@@ -90,6 +90,8 @@ export default class App extends Component {
                 const after = state.todoData.slice(erasedElementIndex + 1);
                 const updatedTodos = [...before, ...after];
 
+                this.uploadDataToServer(JSON.stringify(updatedTodos)).then();
+
                 return {
                     todoData: updatedTodos
                 };
