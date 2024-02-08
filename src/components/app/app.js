@@ -12,6 +12,12 @@ export default class App extends Component {
 
     firstFreeTodoListItemIndex = 0;
 
+    state = {
+        todoData: [],
+        filterByType: this.filterAllTasks,
+        filterByUserQuery: this.filterAllTasks
+    };
+
     createListItem = (label) => {
         return {
             label: label,
@@ -59,12 +65,6 @@ export default class App extends Component {
             {filterByType: newFilter}
         );
     }
-
-    state = {
-        todoData: [],
-        filterByType: this.filterAllTasks,
-        filterByUserQuery: this.filterAllTasks
-    };
 
     setFilterFromUser = (searchQuery) => {
         let newFilter;
