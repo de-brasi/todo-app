@@ -1,0 +1,21 @@
+services:
+  backend-service:
+    container_name: backend-container
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - "8000:8000"
+    network_mode: 'host'
+
+  frontend-service:
+    container_name: frontend-container
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - "3000:3000"
+    depends_on: [backend-service]
+    network_mode: 'host'
